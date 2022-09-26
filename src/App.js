@@ -1,54 +1,43 @@
-import React, { useState } from "react";
-
-import './App.css';
-
-import Header from './components/Header';
-import ContactForm from './components/ContactForm';
-import Contact from './components/Contact';
-
-import { Box, List } from "@mui/material";
+import { Card, CardContent, Grid } from "@mui/material";
+import "./App.css";
+import { useState } from "react";
+import Contact from "./components/Contact";
+import ContactForm from "./components/ContactForm";
+import Header from "./components/Header";
 
 // Uncomment untuk memuat daftar kontak
 import contactsJSON from "./data/contacts.json";
-const initialState = [...contactsJSON];
+
 const App = () => {
   // Masukkan Header dan lakukan map untuk Contact ke dalam div App
   // untuk membuat daftar kontak bisa menggunakan MUI list
   // https://mui.com/material-ui/react-list/#folder-list
-  const [contacts, setContacts] = useState(initialState);
+
 
   // Masukkan contacts yang sudah didapat dalam JSON sebagai initial state
+  const [contacts, setContacts] = useState(contactsJSON);
   // Buatlah handler untuk menambahkan kontak baru yang akan dikirim ke ContactForm
-  const addNewContact = newContact => {
-    setContacts([...contacts, newContact]);
+  const handleNewContact = (value) => {
+    setContacts([...contacts, value]);
   };
 
   return (
     <div className="App">
       <Header />
-      <Box
-        sx={{
-          display: "flex",
-          alignItem: "center",
-          justifyContent: "space-between",
-          mx: 10,
-          my: 2,
-          maxWidth: "100%",
-        }}
-      >
-        <ContactForm addNewContact={addNewContact} />
-        <List
-          sx={{
-            bgcolor: "#DBF6F0",
-            flex: 1,
-            maxWidth: 600,
-          }}
-        >
-          {contacts.map(contact => (
-            <Contact data={contact} key={contact.photo} />
-          ))}
-        </List>
-      </Box>
+      <Grid container className="Custom-container">
+        <Grid item md={6}>
+          <ContactForm fnNewContact={(value) => handleNewContact(value)} />
+        </Grid>
+        <Grid item md={6}>
+          <Card sx={{ maxWidth: 600, backgroundColor: "#dbf6f0" }}>
+            <CardContent>
+              {contacts.map((contact, i) => (
+                <Contact key={i} data={contact} />
+              ))}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </div>
   );
 };

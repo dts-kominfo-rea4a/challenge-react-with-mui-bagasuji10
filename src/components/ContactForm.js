@@ -2,83 +2,93 @@
 // https://mui.com/material-ui/react-text-field/#basic-textfield
 // dan Card
 // https://mui.com/material-ui/react-card/#basic-card
-
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    FormControl,
+    TextField,
+} from "@mui/material";
 import { useState } from "react";
 
-import { Card, TextField, Button } from "@mui/material";
-
-const initialValue = {
-    name: "",
-    phone: "",
-    email: "",
-    photo: "",
-};
-
-const ContactForm = (addNewContact) => {
+const ContactForm = ({ fnNewContact }) => {
     // Form berisi name, phone, email, dan photo url
     // Buatlah state newContact berupa objek sesuai dengan data yang ada
-    const [newContact, setNewContact] = useState(initialValue);
-
-    const onChangeHandler = event => {
-        const { id, value } = event.target;
-        setNewContact(prev => {
-            if (prev.value === value) return;
-
-            return { ...prev, [id]: value };
-        });
+    const initialState = {
+        name: "",
+        phone: "",
+        email: "",
+        photo: "",
     };
-
-    const onSubmitHandler = event => {
-        event.preventDefault();
-        addNewContact(newContact);
-        setNewContact(initialValue);
+    const [newContact, setNewContact] = useState(initialState);
+    const handleChange = (name, value) => {
+        setNewContact({ ...newContact, [name]: value });
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        fnNewContact(newContact);
+        setNewContact(initialState);
     };
     return (
-        <Card
-            component="form"
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-                flex: 1,
-                maxWidth: 350,
-                maxHeight: 350,
-                px: 4,
-            }}
-        >
-            <TextField
-                id="name"
-                label="Name"
-                onChange={onChangeHandler}
-                value={newContact.name}
-                required
-            />
-            <TextField
-                id="phone"
-                label="Phone"
-                onChange={onChangeHandler}
-                value={newContact.phone}
-                required
-            />
-            <TextField
-                id="email"
-                label="email"
-                onChange={onChangeHandler}
-                value={newContact.email}
-                required
-            />
-            <TextField
-                id="photo"
-                label="Photo URL"
-                onChange={onChangeHandler}
-                value={newContact.photo}
-                required
-            />
-            <Button variant="text" color="success" onClick={onSubmitHandler}>
-                Add New
-            </Button>
-        </Card>
+        <>
+            <Card sx={{ maxWidth: 500, margin: "auto", backgroundColor: "#f3f1eb" }}>
+                <form onSubmit={handleSubmit}>
+                    <CardContent>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                required
+                                id="filled-required"
+                                label="Name"
+                                name="name"
+                                variant="filled"
+                                value={newContact.name}
+                                onChange={(e) => handleChange("name", e.target.value)}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                required
+                                id="filled-required"
+                                label="Phone"
+                                name="phone"
+                                variant="filled"
+                                value={newContact.phone}
+                                onChange={(e) => handleChange("phone", e.target.value)}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                required
+                                id="filled-required"
+                                label="Email"
+                                name="email"
+                                variant="filled"
+                                value={newContact.email}
+                                onChange={(e) => handleChange("email", e.target.value)}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                required
+                                id="filled-required"
+                                label="Photo Url"
+                                name="photo"
+                                variant="filled"
+                                value={newContact.photo}
+                                onChange={(e) => handleChange("photo", e.target.value)}
+                            />
+                        </FormControl>
+                    </CardContent>
+                    <CardActions>
+                        <Button variant="text" color="success" size="small" type="submit">
+                            ADD NEW
+                        </Button>
+                    </CardActions>
+                </form>
+            </Card>
+        </>
     );
-}
+};
 
 export default ContactForm;
