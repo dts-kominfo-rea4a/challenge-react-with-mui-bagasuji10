@@ -1,45 +1,54 @@
+import React, { useState } from "react";
+
 import './App.css';
+
 import Header from './components/Header';
 import ContactForm from './components/ContactForm';
 import Contact from './components/Contact';
 
+import { Box, List } from "@mui/material";
+
 // Uncomment untuk memuat daftar kontak
-import contactsJSON from './data/contacts.json';
-import { useState } from 'react';
+import contactsJSON from "./data/contacts.json";
 const initialState = [...contactsJSON];
 const App = () => {
   // Masukkan Header dan lakukan map untuk Contact ke dalam div App
   // untuk membuat daftar kontak bisa menggunakan MUI list
   // https://mui.com/material-ui/react-list/#folder-list
-  const [contacts, newContact] = useState(initialState);
+  const [contacts, setContacts] = useState(initialState);
 
   // Masukkan contacts yang sudah didapat dalam JSON sebagai initial state
   // Buatlah handler untuk menambahkan kontak baru yang akan dikirim ke ContactForm
-  const newContactList = (data) => {
-    newContact([...contacts, data]);
+  const addNewContact = newContact => {
+    setContacts([...contacts, newContact]);
   };
 
   return (
     <div className="App">
       <Header />
-      <div style={{ display: "flex", gap: "70px" }}>
-        <ContactForm addNewContact={newContactList} />
-        <div
-          style={{
-            width: "50%",
-            backgroundColor: "#DFD0D1",
-            marginTop: "80px",
-            marginRight: "60px",
-            maxheight: "120px",
-            borderRadius: "8px",
-            padding: "12px",
+      <Box
+        sx={{
+          display: "flex",
+          alignItem: "center",
+          justifyContent: "space-between",
+          mx: 10,
+          my: 2,
+          maxWidth: "100%",
+        }}
+      >
+        <ContactForm addNewContact={addNewContact} />
+        <List
+          sx={{
+            bgcolor: "#DBF6F0",
+            flex: 1,
+            maxWidth: 600,
           }}
         >
-          {contacts.map((contact) => {
-            return <Contact data={contact} key={contact.photo} />;
-          })}
-        </div>
-      </div>
+          {contacts.map(contact => (
+            <Contact data={contact} key={contact.photo} />
+          ))}
+        </List>
+      </Box>
     </div>
   );
 };

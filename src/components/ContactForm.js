@@ -2,103 +2,82 @@
 // https://mui.com/material-ui/react-text-field/#basic-textfield
 // dan Card
 // https://mui.com/material-ui/react-card/#basic-card
-import React, { useState } from 'react';
-import { TextField, Button } from "@mui/material";
+
+import { useState } from "react";
+
+import { Card, TextField, Button } from "@mui/material";
+
+const initialValue = {
+    name: "",
+    phone: "",
+    email: "",
+    photo: "",
+};
 
 const ContactForm = (addNewContact) => {
     // Form berisi name, phone, email, dan photo url
     // Buatlah state newContact berupa objek sesuai dengan data yang ada
-    const [name, addName] = useState("");
-    const [phone, addPhone] = useState("");
-    const [email, addEmail] = useState("");
-    const [photo, addPhoto] = useState("");
-    const inputName = (event) => {
-        addName(event.target.value);
+    const [newContact, setNewContact] = useState(initialValue);
+
+    const onChangeHandler = event => {
+        const { id, value } = event.target;
+        setNewContact(prev => {
+            if (prev.value === value) return;
+
+            return { ...prev, [id]: value };
+        });
     };
-    const inputPhone = (event) => {
-        addPhone(event.target.value);
-    };
-    const inputEmail = (event) => {
-        addEmail(event.target.value);
-    };
-    const inputPhoto = (event) => {
-        addPhoto(event.target.value);
-    };
-    const submitDataForm = (event) => {
+
+    const onSubmitHandler = event => {
         event.preventDefault();
-        let dataForm = { name, phone, email, photo, };
-        addName("");
-        addPhone("");
-        addEmail("");
-        addPhoto("");
-        addNewContact(dataForm);
+        addNewContact(newContact);
+        setNewContact(initialValue);
     };
     return (
-        <>
-            <div
-                style={{
-                    backgroundColor: "#FAFFE4",
-                    width: "50%",
-                    height: "380px",
-                    borderRadius: "7px",
-                    padding: "7px",
-                    marginTop: "65px",
-                    marginLeft: "25px",
-                }}
-            >
-                <form onSubmit={submitDataForm}>
-                    <TextField
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        required
-                        id="outlined-required"
-                        margin="normal"
-                        label="Name"
-                        value={name}
-                        onChange={inputName}
-                    />
-                    <TextField
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        required
-                        id="outlined-required"
-                        margin="normal"
-                        label="Phone"
-                        value={phone}
-                        onChange={inputPhone}
-                    />
-                    <TextField
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        required
-                        id="outlined-required"
-                        margin="normal"
-                        label="Email"
-                        value={email}
-                        onChange={inputEmail}
-                    />
-                    <TextField
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        required
-                        id="outlined-required"
-                        margin="normal"
-                        label="Photo"
-                        value={photo}
-                        onChange={inputPhoto}
-                    />
-                    <Button
-                        type="submit"
-                        style={{ marginTop: "25px", color: "green" }}
-                    >
-                        Add New
-                    </Button>
-                </form>
-            </div></>
+        <Card
+            component="form"
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+                flex: 1,
+                maxWidth: 350,
+                maxHeight: 350,
+                px: 4,
+            }}
+        >
+            <TextField
+                id="name"
+                label="Name"
+                onChange={onChangeHandler}
+                value={newContact.name}
+                required
+            />
+            <TextField
+                id="phone"
+                label="Phone"
+                onChange={onChangeHandler}
+                value={newContact.phone}
+                required
+            />
+            <TextField
+                id="email"
+                label="email"
+                onChange={onChangeHandler}
+                value={newContact.email}
+                required
+            />
+            <TextField
+                id="photo"
+                label="Photo URL"
+                onChange={onChangeHandler}
+                value={newContact.photo}
+                required
+            />
+            <Button variant="text" color="success" onClick={onSubmitHandler}>
+                Add New
+            </Button>
+        </Card>
     );
 }
 
