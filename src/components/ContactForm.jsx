@@ -2,8 +2,9 @@
 // https://mui.com/material-ui/react-text-field/#basic-textfield
 // dan Card
 // https://mui.com/material-ui/react-card/#basic-card
-import { TextField, Button } from "@mui/material";
 import React, { useState } from 'react';
+import { TextField, Button } from "@mui/material";
+
 const ContactForm = (addNewContact) => {
     // Form berisi name, phone, email, dan photo url
     // Buatlah state newContact berupa objek sesuai dengan data yang ada
@@ -23,14 +24,14 @@ const ContactForm = (addNewContact) => {
     const inputPhoto = (event) => {
         addPhoto(event.target.value);
     };
-    const submitData = (event) => {
+    const submitDataForm = (event) => {
         event.preventDefault();
-        let dataFormInput = { name, phone, email, photo, };
+        let dataForm = { name, phone, email, photo, };
         addName("");
         addPhone("");
         addEmail("");
         addPhoto("");
-        addNewContact(dataFormInput);
+        addNewContact(dataForm);
     };
     return (
         <>
@@ -45,7 +46,7 @@ const ContactForm = (addNewContact) => {
                     marginLeft: "25px",
                 }}
             >
-                <form onSubmit={submitData}>
+                <form onSubmit={submitDataForm}>
                     <TextField
                         type="text"
                         fullWidth
